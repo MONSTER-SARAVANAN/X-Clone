@@ -1,3 +1,4 @@
+import Post from "../models/post.model.js";
 import Short from "../models/short.js";
 import cloudinary from "cloudinary";
 import fs from "fs";
@@ -26,14 +27,20 @@ export const uploadShort = async (req, res) => {
 	}
 };
 
+
 export const getShorts = async (req, res) => {
-    try {
-        const shorts = await Short.find().sort({ createdAt: -1 });
-        res.status(200).json(shorts);
-    } catch (error) {
-        res.status(500).json({ error: "Failed to fetch shorts" });
-    }
+  try {
+    const shorts = await Post.find({ isShort: true })
+      .populate("user", "username profileImg")
+      .sort({ createdAt: -1 });
+    
+    res.status(200).json(shorts);
+  } catch (error) {
+    console.error("Error fetching shorts:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
+
 
 // ✅ Like/Unlike a Short
 

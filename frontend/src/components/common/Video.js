@@ -1,4 +1,3 @@
-// src/components/common/Video.js
 import React from "react";
 import ReactPlayer from "react-player";
 import { FaRegHeart, FaRegComment } from "react-icons/fa";

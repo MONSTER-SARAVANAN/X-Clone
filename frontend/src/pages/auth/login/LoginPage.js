@@ -24,7 +24,7 @@ const LoginPage = () => {
 		error,
 	} = useMutation({
 		mutationFn: async ({ username, password }) => {
-			const res = await fetch(`${baseUrl}/api/auth/login`, {
+			const res = await fetch(`${baseUrl}/api/auth/login`, { 
 				method: "POST",
 				credentials: "include", // Ensure cookies are sent with requests
 				headers: {
