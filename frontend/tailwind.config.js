@@ -1,25 +1,28 @@
+// tailwind.config.js  (ESM)
 import daisyui from "daisyui";
-import daisyUIThemes from "daisyui/src/theming/themes";
+
 /** @type {import('tailwindcss').Config} */
-const tailwindConfig = {
-	content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
-	theme: {
-		extend: {},
-	},
-	plugins: [daisyui],
+export default {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  theme: { extend: {} },
+  plugins: [daisyui],
 
-	daisyui: {
-		themes: [
-			"light",
-			{
-				black: {
-					...daisyUIThemes["black"],
-					primary: "rgb(29, 155, 240)",
-					secondary: "rgb(24, 24, 24)",
-				},
-			},
-		],
-	},
+  daisyui: {
+    themes: [
+      "light",                 // builtin
+      {
+        black: {               // your custom theme
+          primary:   "#1d9bf0",   // X‑blue
+          secondary: "#181818",
+          accent:    "#f4a261",
+          neutral:   "#191d24",
+          "base-100": "#000000",
+          info:      "#3abff8",
+          success:   "#36d399",
+          warning:   "#fbbd23",
+          error:     "#f87272",
+        },
+      },
+    ],
+  },
 };
-
-export default tailwindConfig;

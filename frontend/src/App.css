@@ -1,0 +1,196 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+/* 
+
+LoginPage
+
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+
+import XSvg from "../../../components/svgs/X";
+import { FaUser } from "react-icons/fa";
+import { MdPassword } from "react-icons/md";
+import LoadingSpinner from "../../../components/common/LoadingSpinner";
+import { baseUrl } from "../../../constant/url";
+
+const LoginPage = () => {
+  const [formData, setFormData] = useState({ username: "", password: "" });
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  /* ------------------------------------------------------------------ */
+  /*  MUTATION ─ login                                                  */
+  /* ------------------------------------------------------------------ */
+  const {
+    mutate: login,
+    isPending,
+    isError,
+    error,
+  } = useMutation({
+    mutationFn: async ({ username, password }) => {
+      if (!username || !password) {
+        throw new Error("Username & password are required");
+      }
+
+      const res = await fetch(`${baseUrl}/api/auth/login`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Login failed");
+
+      // 👉  Return user so we can cache it in onSuccess
+      return data.user;
+    },
+
+    /* -------------------- onSuccess --------------------------------- */
+    onSuccess: (user) => {
+      // Put the user straight into the React‑Query cache
+      queryClient.setQueryData(["authUser"], user);
+
+      toast.success("Login successful!");
+      navigate("/home", { replace: true });
+    },
+
+    /* -------------------- onError ----------------------------------- */
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
+
+  /* ------------------------------------------------------------------ */
+  /*  HANDLERS                                                          */
+  /* ------------------------------------------------------------------ */
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    login(formData);
+  };
+
+  const handleChange = (e) =>
+    setFormData((f) => ({ ...f, [e.target.name]: e.target.value }));
+
+  /* ------------------------------------------------------------------ */
+  /*  RENDER                                                            */
+  /* ------------------------------------------------------------------ */
+  return (
+    <div className="max-w-screen-xl mx-auto flex h-screen">
+      {/* Left side brand graphic (desktop only) */}
+      <div className="flex-1 hidden lg:flex items-center justify-center">
+        <XSvg className="lg:w-2/3 fill-white" />
+      </div>
+
+      {/* Form */}
+      <div className="flex-1 flex flex-col justify-center items-center px-4">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4 w-full max-w-sm"
+        >
+          <XSvg className="w-24 lg:hidden fill-white self-center" />
+          <h1 className="text-4xl font-extrabold text-white text-center">
+            Let’s&nbsp;go.
+          </h1>
+
+          {/* USERNAME */}
+          <label className="input input-bordered rounded flex items-center gap-2">
+            <FaUser />
+            <input
+              type="text"
+              name="username"
+              placeholder="Username"
+              value={formData.username}
+              onChange={handleChange}
+              className="grow bg-transparent outline-none"
+              required
+            />
+          </label>
+
+          {/* PASSWORD */}
+          <label className="input input-bordered rounded flex items-center gap-2">
+            <MdPassword />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              className="grow bg-transparent outline-none"
+              required
+            />
+          </label>
+
+          {/* SUBMIT BUTTON */}
+          <button
+            type="submit"
+            className="btn btn-primary rounded-full text-white disabled:opacity-50"
+            disabled={isPending}
+          >
+            {isPending ? <LoadingSpinner /> : "Login"}
+          </button>
+
+          {isError && (
+            <p className="text-red-500 text-center text-sm">{error.message}</p>
+          )}
+        </form>
+
+        {/* LINK TO SIGN‑UP */}
+        <div className="flex flex-col gap-2 mt-6">
+          <p className="text-white text-lg text-center">
+            Don’t have an account?
+          </p>
+          <Link to="/signup" className="w-full">
+            <button className="btn btn-outline btn-primary rounded-full w-full">
+              Sign up
+            </button>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default LoginPage; */

@@ -1,0 +1,6 @@
+### Get Notification
+GET  http://localhost:5000/api/notifications
+
+
+### Delete Notification
+DELETE   http://localhost:5000/api/notifications

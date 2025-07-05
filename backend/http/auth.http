@@ -1,0 +1,49 @@
+### Signup a new user
+POST http://localhost:5000/api/auth/signup
+Content-Type: application/json
+
+{
+  "fullName": "Tester1",
+  "username": "tester1",
+  "email": "tester1@example.com",
+  "password": "password123"
+}
+
+
+### Login  
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "tester1",
+  "password": "password123"
+}
+
+
+### Logout  
+POST http://localhost:5000/api/auth/logout
+Content-Type: application/json
+
+{
+  "username": "tester",
+  "password": "password123"
+}
+
+
+### GetMe  
+GET  http://localhost:5000/api/auth/me
+Content-Type: application/json
+
+{
+  "username": "tester",
+  "password": "password123"
+}
+
+### Login   testing
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "demon",
+  "password": "demonking36"
+}

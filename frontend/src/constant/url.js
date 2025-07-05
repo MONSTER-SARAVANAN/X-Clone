@@ -1,1 +1,2 @@
-export const  baseUrl = "http://localhost:5000"
+// ✅ Correct backend URL
+export const baseUrl = "http://localhost:5000";

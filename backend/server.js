@@ -1,77 +1,73 @@
-import express from "express"
-import dotenv from "dotenv"
-import cookieParser from "cookie-parser"
-import cloudinary from "cloudinary"
+import path from "path";
+import { fileURLToPath } from "url";  //gt
+import express from "express";
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import { v2 as cloudinary } from "cloudinary";
 import cors from "cors";
-import authRoute from "./routes/auth.route.js"
-import userRoute from "./routes/user.route.js"
-import postRoute from "./routes/post.route.js"
-import videoRoutes from "./routes/VideoRoutes.js"
-import commentRoutes from "./routes/comment.route.js";
-import notificationRoute from "./routes/notificationRoute.js"
-import connectDB from "./db/connectDB.js"
-import errorHandler from "./middleware/errorHandler.js"; 
-import shortsRoutes from "./routes/shorts.js"; 
-import shortCommentRoutes from "./routes/shortComments.js";
-import { Server } from "socket.io";
-import http from "http";
+import morgan from "morgan";
+
+import connectDB from "./db/connectDB.js";
+
+import authRoutes from "./routes/auth.route.js";
+import userRoutes from "./routes/user.route.js";
+import postRoutes from "./routes/post.route.js";
+import notificationRoutes from "./routes/notification.route.js";
+
 
 dotenv.config();
 const app = express();
-const server = http.createServer(app); // ✅ Attach Express to HTTP Server
+const PORT          = process.env.PORT || 5000;
+const FRONTEND_URL  = process.env.FRONTEND_URL || "http://localhost:5173";
+const __filename    = fileURLToPath(import.meta.url);
+const __dirname     = path.resolve();
 
-const io = new Server(server, {
-  cors: { origin: "http://localhost:3000" }, // Match frontend URL
-});
+
+["CLOUDINARY_CLOUD_NAME","CLOUDINARY_API_KEY","CLOUDINARY_API_SECRET_KEY"]
+  .forEach((key) => {
+    if (!process.env[key])
+      throw new Error(`❌ Missing ${key} in .env – Cloudinary cannot start`);
+  });
 
 cloudinary.config({
-    cloud_name : process.env.CLOUDINARY_CLOUD_NAME,
-    api_key : process.env.CLOUDINARY_API_KEY,
-    api_secret : process.env.CLOUDINARY_API_SECRET_KEY
+	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+	api_key: process.env.CLOUDINARY_API_KEY,
+	api_secret: process.env.CLOUDINARY_API_SECRET_KEY,
 });
 
 app.use(cors({
-    origin: "http://localhost:3000",
-    credentials : true
+	origin : FRONTEND_URL,
+	credentials : true
 }))
 
-const PORT = process.env.PORT || 5000; // Ensure a default port
 
-app.use(express.json({ limit : "5mb" }));
+app.use(express.json({ limit: "5mb" })); // to parse req.body
+app.use(express.urlencoded({ extended: true })); // to parse form data(urlencoded)
 app.use(cookieParser());
-app.use(express.urlencoded({ extended : true }));
 
-app.use("/api/auth" , authRoute);
-app.use("/api/users", userRoute);
-app.use("/api/posts", postRoute);
-app.use("/api/videos", videoRoutes);
-app.use("/api/shorts", shortsRoutes);
-app.use("/api/comments", commentRoutes);
-app.use("/api/short-comments", shortCommentRoutes);
-app.use("/api/notifications", notificationRoute);
 
-// Global Error Handler
-app.use(errorHandler);
 
-// ✅ WebSocket Connection
-io.on("connection", (socket) => {
-  console.log("User connected:", socket.id);
+// app.get("/", (req, res) => {
+//   res.json({ message: "API is running" });
+// });
 
-  socket.on("likeShort", ({ shortId, userId }) => {
-    io.emit("updateLike", { shortId, userId }); 
-  });
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
+app.use("/api/notifications", notificationRoutes);
 
-  socket.on("newComment", ({ shortId, comment }) => {
-    io.emit("updateComments", { shortId, comment }); 
-  });
+// if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
 
-  socket.on("disconnect", () => {
-    console.log("User disconnected:", socket.id);
-  });
-});
 
-// ✅ Corrected: Start WebSocket and Express Server
-server.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  connectDB();
+if (process.env.NODE_ENV === "production") {
+	app.use(express.static(path.join(__dirname, "frontend/dist" )));
+
+	app.use("*", (req, res) => {
+		res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+	});
+}
+
+app.listen(PORT, () => {
+	console.log(`Server is running on port ${PORT}`);
+	connectDB();
 });

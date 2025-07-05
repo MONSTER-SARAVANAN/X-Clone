@@ -1,0 +1,40 @@
+### Create Post
+POST http://localhost:5000/api/posts/create
+Content-Type: application/json
+
+{
+  "text": "Varataaaaa Mame"
+}
+
+### Delete Post
+DELETE  http://localhost:5000/api/posts/68665811317941f51306c749
+
+
+### CommentsonPost
+POST http://localhost:5000/api/posts/comment/68665ad0317941f51306c750
+Content-Type: application/json
+
+{
+  "text": "Vanakkam da Mapla  Venus Irunthu"
+}
+
+
+
+### LikesonPost
+POST http://localhost:5000/api/posts/like/67bec6e470f7d27d15384c9e
+
+
+
+### Get All Posts
+GET  http://localhost:5000/api/posts/all
+
+
+### Get All Posts
+GET  http://localhost:5000/api/posts/likes/686647970fb792b45fb4195b
+
+### Following Posts
+GET  http://localhost:5000/api/posts/following
+
+
+### Get UserPosts
+GET  http://localhost:5000/api/posts/user/tester1
