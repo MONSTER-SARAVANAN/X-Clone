@@ -5,7 +5,6 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import { v2 as cloudinary } from "cloudinary";
 import cors from "cors";
-import morgan from "morgan";
 
 import connectDB from "./db/connectDB.js";
 
